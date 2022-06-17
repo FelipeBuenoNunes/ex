@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  mongo:
+    image: mongo:5.0
+    volumes:
+    - ./mongo-volume:/data/db
+  server-back:
+    image: node:latest
+    volumes:
+    - ./backend:/backend
+    ports:
+        - 3000:3000
+    command: bash -c "cd /backend && npm i && npm start"
+  server-front:
+    image: nginx:latest
+    volumes:
+    - type: bind
+      source: ./front/
+      target: /usr/share/nginx/html/
+    ports: 
+      - 8080:80
